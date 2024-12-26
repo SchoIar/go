@@ -2,7 +2,7 @@
 
 Go puzzle generator and simulator. 
 
-# Setup
+## Setup
 1. Clone this repo.
 
 2. Build project with maven, ``mvn clean package``
