@@ -1,0 +1,22 @@
+# Maven target directory
+/target/
+
+# Maven-specific files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# VSCode settings
+/.vscode/
+
+# other
+.DS_Store
+*.log
+*.class
+*.jar
+*.war
+*.ear
+/target/
+/build/
