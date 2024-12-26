@@ -32,6 +32,14 @@ public class Board {
 
     public boolean play(int x, int y, boolean isWhite){
         //TODO: Check for validity. If this move is valid, it is played. Else, it is not played.
+        if(layout[x][y] != EMPTY){
+            return false;
+        }
+
+        //Check if this move is invalid (stone dies.)
+
+        //Check for Ko
+        
         if(isWhite){
             layout[x][y] = WHITE;
         }
