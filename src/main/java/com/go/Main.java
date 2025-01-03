@@ -12,7 +12,7 @@ public class Main {
         );
 
         List<int[]> initialWhite = Arrays.asList(
-            new int[]{1, 1}  // White stone at (1, 1)
+            new int[]{1, 0}  // White stone at (1, 1)
         );
 
         List<int[]> initialBlack = Arrays.asList(

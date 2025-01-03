@@ -82,9 +82,9 @@ public class Board {
         for (int i = BOARD_SIZE - 1; i >= 0; i--) {
             for (int j = 0; j < BOARD_SIZE; j++) {
 
-                if (layout[i][j] == WHITE) {
+                if (layout[j][i] == WHITE) {
                     System.out.print("W ");
-                } else if (layout[i][j] == BLACK) {
+                } else if (layout[j][i] == BLACK) {
                     System.out.print("B ");
                 } else{
                     System.out.print("* ");
