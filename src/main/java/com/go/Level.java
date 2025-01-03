@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Level {
     private Board board;
-    private List<int[]> solution; //lists ordered set of moves to solve the puzzle, in format x,y
+    private List<int[]> solution; //lists ordered set of moves to solve the puzzle, in format x,y, isWhite
     private int current;
 
     public Level(Board board, List<int[]> solution) {
@@ -26,8 +26,23 @@ public class Level {
 
     }
 
+    // Add validation elsewhere
+    // private boolean validateSoln(List<int[]> solution){
+    //     int prevColor = 3;
+    //     for(int[] move : solution){
+    //         int color = move[2];
+    //         if(prevColor != color){
+    //             prevColor = color;
+    //         } else{ //error, two repeated moves. 
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
     /**
      * Checks if current move is the correct move. If so, it can be played, else, level resets.
+     * Plays move for current color, and subsequent follow up move for next.
      * 
      * @param x
      * @param y
@@ -39,6 +54,12 @@ public class Level {
         if(x == expectedMove[0] && y == expectedMove[1]){
             board.play(x, y, isWhite);
             current ++;
+
+            if (current < solution.size()) {
+                int[] opponentMove = solution.get(current);
+                board.play(opponentMove[0], opponentMove[1], !isWhite);
+                current ++;
+            }
             return true;
         }
 
