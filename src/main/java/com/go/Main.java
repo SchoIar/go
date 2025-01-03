@@ -41,9 +41,9 @@ public class Main {
         level.playMove(x, y, true);
 
         if(level.isSolved()){
-            System.out.println("2: Solved");
+            System.out.println("3: Solved");
         } else{
-            System.out.println("2: Not Solved");
+            System.out.println("3: Not Solved");
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -58,9 +58,9 @@ public class Main {
         level.print();
         
         if(level.isSolved()){
-            System.out.println("3: Solved");
+            System.out.println("4: Solved");
         } else{
-            System.out.println("3: Not Solved");
+            System.out.println("4: Not Solved");
         }
         
     }
