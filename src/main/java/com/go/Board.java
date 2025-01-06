@@ -62,26 +62,33 @@ public class Board {
     }
 
     public boolean play(int x, int y, boolean isWhite) {
-        // TODO: Check for validity. If this move is valid, it is played. Else, it is
-        // not played.
         if (layout[x][y] != EMPTY) {
             return false;
         }
-
-        // Check if this move is invalid (stone dies.)
-
-        // Check for Ko
 
         if (isWhite) {
             layout[x][y] = WHITE;
         } else {
             layout[x][y] = BLACK;
         }
-        return true;
-    }
 
-    public int getStoneAt(int x, int y) {
-        return layout[x][y];
+        // Capture opponent groups. TODO: Check for Ko.
+        for (int[] neighbor : getNeighbors(x, y)) {
+            int nx = neighbor[0], ny = neighbor[1];
+            if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
+                if (layout[nx][ny] != EMPTY && layout[nx][ny] != layout[x][y]) {
+                    captureGroup(nx, ny);
+                }
+            }
+        }
+
+        // invalid move
+        if (!hasLiberties(x, y)) {
+            layout[x][y] = EMPTY;
+            return false;
+        }
+
+        return true;
     }
 
     public void print() {
@@ -149,5 +156,42 @@ public class Board {
         }
 
         return neighbors;
+    }
+
+    private void captureGroup(int x, int y) {
+        int color = layout[x][y];
+        boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        Queue<int[]> queue = new LinkedList<>(); // store FIFO nodes
+        queue.add(new int[] { x, y });
+        visited[x][y] = true;
+
+        // Collect all stones in the group
+        Set<int[]> group = new HashSet<>();
+        group.add(new int[] { x, y });
+
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int px = pos[0], py = pos[1];
+
+            for (int[] neighbor : getNeighbors(px, py)) {
+                int nx = neighbor[0], ny = neighbor[1];
+                if (nx < 0 || nx >= BOARD_SIZE || ny < 0 || ny >= BOARD_SIZE) {
+                    continue;
+                }
+
+                if (layout[nx][ny] == color && !visited[nx][ny]) {
+                    queue.add(new int[] { nx, ny });
+                    visited[nx][ny] = true;
+                    group.add(new int[] { nx, ny });
+                }
+            }
+        }
+
+        // Remove the group if no liberties
+        if (!hasLiberties(x, y)) {
+            for (int[] stone : group) {
+                layout[stone[0]][stone[1]] = EMPTY;
+            }
+        }
     }
 }
