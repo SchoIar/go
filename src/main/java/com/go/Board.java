@@ -1,6 +1,12 @@
 package com.go;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Represents the go board.
@@ -15,8 +21,8 @@ public class Board {
      * 
      */
     private int[][] layout;
-    private List<int[]> initialWhite; 
-    private List<int[]> initialBlack; 
+    private List<int[]> initialWhite;
+    private List<int[]> initialBlack;
     public static final int WHITE = 1;
     public static final int BLACK = 2;
     public static final int EMPTY = 0;
@@ -29,13 +35,13 @@ public class Board {
         emptyBoard();
     }
 
-    public void setIntialStones(List<int[]> whiteStones, List<int[]> blackStone){
+    public void setIntialStones(List<int[]> whiteStones, List<int[]> blackStone) {
         this.initialBlack = blackStone;
         this.initialWhite = whiteStones;
         restart();
     }
 
-    private void emptyBoard(){
+    private void emptyBoard() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 layout[i][j] = EMPTY;
@@ -86,11 +92,62 @@ public class Board {
                     System.out.print("W ");
                 } else if (layout[j][i] == BLACK) {
                     System.out.print("B ");
-                } else{
+                } else {
                     System.out.print("* ");
                 }
             }
             System.out.println();
         }
+    }
+
+    private boolean hasLiberties(int x, int y) {
+        int color = layout[x][y];
+        boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] { x, y });
+        visited[x][y] = true;
+
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int px = pos[0];
+            int py = pos[1];
+
+            // check neibours
+            for (int[] neighbor : getNeighbors(px, py)) {
+                int nx = neighbor[0], ny = neighbor[1];
+
+                if (layout[nx][ny] == EMPTY) {
+                    return true;
+                }
+
+                if (layout[nx][ny] == color && !visited[nx][ny]) {
+                    queue.add(new int[] { nx, ny });
+                    visited[nx][ny] = true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private List<int[]> getNeighbors(int x, int y) {
+        List<int[]> neighbors = new ArrayList<>();
+        if (x - 1 >= 0) {
+            neighbors.add(new int[] { x - 1, y });
+        }
+
+        if (x + 1 < BOARD_SIZE) {
+            neighbors.add(new int[] { x + 1, y });
+        }
+
+        if (y - 1 >= 0) {
+            neighbors.add(new int[] { x, y - 1 });
+        }
+
+        if (y + 1 < BOARD_SIZE) {
+            neighbors.add(new int[] { x, y + 1 });
+        }
+
+        return neighbors;
     }
 }
