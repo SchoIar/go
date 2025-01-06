@@ -26,7 +26,8 @@ public class Board {
     public static final int WHITE = 1;
     public static final int BLACK = 2;
     public static final int EMPTY = 0;
-    private static final int BOARD_SIZE = 8;
+    public static final int BOARD_SIZE = 9;
+    private boolean toggle = true; //toggle value, true: White, false: Black
 
     public Board() {
         this.layout = new int[BOARD_SIZE][BOARD_SIZE];
@@ -61,6 +62,10 @@ public class Board {
         }
     }
 
+    public int getStoneAt(int x, int y){
+        return layout[x][y];
+    }
+
     public boolean play(int x, int y, boolean isWhite) {
         if (layout[x][y] != EMPTY) {
             return false;
@@ -89,6 +94,13 @@ public class Board {
         }
 
         return true;
+    }
+
+    public boolean play(int x, int y){
+        boolean returnValue = play(x, y, toggle);
+        if(returnValue)
+            toggle = !toggle;
+        return returnValue;
     }
 
     public void print() {
