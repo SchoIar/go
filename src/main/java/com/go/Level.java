@@ -81,4 +81,8 @@ public class Level {
         return current >= solution.size();
     }
 
+    public int getStoneAt(int x, int y){
+        return board.getStoneAt(x, y);
+    }
+
 }
