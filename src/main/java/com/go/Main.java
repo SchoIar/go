@@ -5,6 +5,45 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1: Play Go, 2: Play Go Puzzles ");
+        int choice = scanner.nextInt();
+        if(choice == 1){
+            playGo();
+        }
+        else{
+            playPuzzle();
+        }
+
+        scanner.close();
+
+    }
+
+    private static void playGo(){
+        Scanner scanner = new Scanner(System.in);
+        Board board = new Board();
+        int i = 0, x, y;
+        while(true){
+            System.out.println("Enter X,Y values for current play");
+            x = scanner.nextInt();
+            y = scanner.nextInt();
+            if(board.play(x, y, i % 2 == 0)){
+                board.print();
+                i++;
+                continue;
+            } //invalid move - try again
+            System.out.println("invalid move, try again");
+
+            if(x == -1){
+                scanner.close();
+                break;
+            }
+        }
+        
+    }
+
+
+    private static void playPuzzle(){
         Board board = new Board();
 
         List<int[]> solution = Arrays.asList(
