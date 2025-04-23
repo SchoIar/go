@@ -21,18 +21,25 @@ public class Board {
      * 
      */
     private int[][] layout;
+    private int[][] previous_layout; //layout saving previous board state (prior to move)
+    private int[][] previous_layout_temp; //copy layout
+
     private List<int[]> initialWhite;
     private List<int[]> initialBlack;
     public static final int WHITE = 1;
     public static final int BLACK = 2;
     public static final int EMPTY = 0;
     public static final int BOARD_SIZE = 9;
+    private boolean moved;
     private boolean toggle = true; //toggle value, true: White, false: Black
 
     public Board() {
         this.layout = new int[BOARD_SIZE][BOARD_SIZE];
+        this.previous_layout = new int[BOARD_SIZE][BOARD_SIZE];
+        this.previous_layout_temp = new int[BOARD_SIZE][BOARD_SIZE];
         this.initialWhite = new ArrayList<>();
         this.initialBlack = new ArrayList<>();
+        this.moved = false;
         emptyBoard();
     }
 
@@ -43,9 +50,15 @@ public class Board {
     }
 
     private void emptyBoard() {
+        moved = false;
+        emptyLayout(layout);
+        emptyLayout(previous_layout);
+    }
+
+    private void emptyLayout(int[][] current){
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                layout[i][j] = EMPTY;
+                current[i][j] = EMPTY;
             }
         }
     }
@@ -71,11 +84,14 @@ public class Board {
             return false;
         }
 
+        copy_layout(previous_layout_temp, layout);
+
         if (isWhite) {
             layout[x][y] = WHITE;
         } else {
             layout[x][y] = BLACK;
         }
+
 
         // Capture opponent groups. TODO: Check for Ko.
         for (int[] neighbor : getNeighbors(x, y)) {
@@ -87,19 +103,50 @@ public class Board {
             }
         }
 
+        if (ko_violation() && moved ){ //checking LAYOUT vs STATE
+            layout[x][y] = EMPTY;
+            copy_layout(layout, previous_layout_temp);
+            System.out.println("LAYOUT VIOLATION");
+            return false;
+        }
+
         // invalid move
         if (!hasLiberties(x, y)) {
             layout[x][y] = EMPTY;
             return false;
         }
 
+        copy_layout(previous_layout, previous_layout_temp);
+        moved = true;
         return true;
     }
+
+    private boolean ko_violation(){
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (previous_layout[i][j] != layout[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void copy_layout( int[][] victim,  int[][] target){
+        System.out.println("SETTING");
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                victim[i][j] = target[i][j];
+            }
+        }
+    }
+
 
     public boolean play(int x, int y){
         boolean returnValue = play(x, y, toggle);
         if(returnValue)
             toggle = !toggle;
+        moved = true;
         return returnValue;
     }
 
