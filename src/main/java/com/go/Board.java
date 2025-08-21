@@ -93,7 +93,7 @@ public class Board {
         }
 
 
-        // Capture opponent groups. TODO: Check for Ko.
+        // Capture opponent groups.
         for (int[] neighbor : getNeighbors(x, y)) {
             int nx = neighbor[0], ny = neighbor[1];
             if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE) {
