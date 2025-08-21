@@ -3,6 +3,7 @@ package com.go;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.util.List;
+import java.util.Random;
 
 public class PuzzleScreen extends JFrame {
     public PuzzleScreen() {
@@ -19,7 +20,8 @@ public class PuzzleScreen extends JFrame {
         }
 
         // load first puzzle. TODO: Change to random or something? or selection? 
-        PuzzleLoader.PuzzleData puzzle = puzzles.get(0);
+        Random rand = new Random();
+        PuzzleLoader.PuzzleData puzzle = puzzles.get(rand.nextInt(puzzles.size()));
         Level level = puzzle.level;
         boolean playerToMoveIsWhite = puzzle.playerIsWhite;
 
