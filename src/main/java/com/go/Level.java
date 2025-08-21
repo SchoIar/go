@@ -1,5 +1,7 @@
 package com.go;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;        
 /**
  * Represents a specific go puzzle. 
@@ -51,10 +53,6 @@ public class Level {
      * @return
      */
     public boolean playMove(int x, int y, boolean isWhite){
-        if(isSolved()){
-            SwingUtilities.invokeLater(() -> new StartScreen());
-
-        }
         int[] expectedMove = solution.get(current);
         if(x == expectedMove[0] && y == expectedMove[1]){
             board.play(x, y, isWhite);

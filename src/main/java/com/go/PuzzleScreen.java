@@ -1,7 +1,7 @@
 package com.go;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -19,15 +19,33 @@ public class PuzzleScreen extends JFrame {
             System.exit(1);
         }
 
-        // load first puzzle. TODO: Change to random or something? or selection? 
+        // Pick a random puzzle
         Random rand = new Random();
         PuzzleLoader.PuzzleData puzzle = puzzles.get(rand.nextInt(puzzles.size()));
         Level level = puzzle.level;
         boolean playerToMoveIsWhite = puzzle.playerIsWhite;
 
+        // Set up panel
         PuzzlePanel puzzlePanel = new PuzzlePanel(level, playerToMoveIsWhite);
         add(puzzlePanel, BorderLayout.CENTER);
 
         setVisible(true);
+        puzzlePanel.requestFocusInWindow();
+
+        puzzlePanel.setOnRetry(() -> {
+            dispose();
+            new PuzzleScreen();
+        });
+
+        puzzlePanel.setOnNewPuzzle(() -> {
+            dispose();
+            new PuzzleScreen();
+        });
+
+        puzzlePanel.setOnBackToMenu(() -> {
+            dispose();
+            new StartScreen();
+        });
+
     }
 }

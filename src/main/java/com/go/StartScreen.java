@@ -18,7 +18,7 @@ public class StartScreen extends JFrame {
         });
         add(playButton);
 
-        JButton solvePuzzleButton = new JButton("Solve Puzzle");
+        JButton solvePuzzleButton = new JButton("Solve Random Puzzle");
         solvePuzzleButton.setBounds(300, 300, 200, 50);
         solvePuzzleButton.addActionListener((ActionEvent e) -> {
             dispose();
