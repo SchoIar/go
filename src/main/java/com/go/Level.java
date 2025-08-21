@@ -29,20 +29,6 @@ public class Level {
 
     }
 
-    // Add validation elsewhere
-    // private boolean validateSoln(List<int[]> solution){
-    //     int prevColor = 3;
-    //     for(int[] move : solution){
-    //         int color = move[2];
-    //         if(prevColor != color){
-    //             prevColor = color;
-    //         } else{ //error, two repeated moves. 
-    //             return false;
-    //         }
-    //     }
-    //     return true;
-    // }
-
     /**
      * Checks if current move is the correct move. If so, it can be played, else, level resets.
      * Plays move for current color, and subsequent follow up move for next.
