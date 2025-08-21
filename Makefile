@@ -6,5 +6,7 @@ test:
 
 clean:
 	mvn clean
+	rm -rf database/puzzles.db
 
-	
+setup_db:
+	python3 database/setup.py
