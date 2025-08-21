@@ -2,7 +2,6 @@ package com.go;
 
 import javax.swing.*;
 import java.awt.BorderLayout;
-import java.util.Arrays;
 import java.util.List;
 
 public class PuzzleScreen extends JFrame {
@@ -12,18 +11,19 @@ public class PuzzleScreen extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        Board board = new Board();
-        List<int[]> solution = Arrays.asList(
-            new int[]{1, 1, Board.WHITE},
-            new int[]{0, 1, Board.BLACK},
-            new int[]{0, 2, Board.WHITE}
-        );
-        List<int[]> initialBlack = Arrays.asList(new int[]{0, 0});
-        List<int[]> initialWhite = Arrays.asList(new int[]{1, 0});
+        // Load puzzles from DB
+        List<PuzzleLoader.PuzzleData> puzzles = PuzzleLoader.loadAllPuzzles();
+        if (puzzles.isEmpty()) {
+            System.out.println("ERROR: no puzzles found in db");
+            System.exit(1);
+        }
 
-        Level level = new Level(board, solution, initialWhite, initialBlack);
+        // load first puzzle. TODO: Change to random or something? or selection? 
+        PuzzleLoader.PuzzleData puzzle = puzzles.get(0);
+        Level level = puzzle.level;
+        boolean playerToMoveIsWhite = puzzle.playerIsWhite;
 
-        PuzzlePanel puzzlePanel = new PuzzlePanel(level); // Custom JPanel for board rendering
+        PuzzlePanel puzzlePanel = new PuzzlePanel(level, playerToMoveIsWhite);
         add(puzzlePanel, BorderLayout.CENTER);
 
         setVisible(true);

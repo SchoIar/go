@@ -7,9 +7,11 @@ import java.awt.event.MouseEvent;
 
 public class PuzzlePanel extends JPanel {
     private final Level level; 
+    private final boolean isWhite; // true if player is white
 
-    public PuzzlePanel(Level level) {
+    public PuzzlePanel(Level level, boolean isWhitePlayer) {
         this.level = level;
+        this.isWhite = isWhitePlayer;
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -20,7 +22,7 @@ public class PuzzlePanel extends JPanel {
                 int x = e.getX() / cellWidth;
                 int y = Board.BOARD_SIZE - 1 - (e.getY() / cellHeight);
 
-                level.playMove(x, y, true);  //NOTE: Assumes Player is white. May need to change later.
+                level.playMove(x, y, isWhitePlayer);  //NOTE: Assumes Player is white. May need to change later.
                 level.print();
                 System.out.println("");
                 repaint();
